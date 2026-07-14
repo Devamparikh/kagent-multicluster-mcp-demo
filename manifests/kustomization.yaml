@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - agentgateway/agentgateway-backend.yaml
+  - agentgateway/http-route.yaml
+  - kagent/remote-mcp-server.yaml
+  - kagent/agent-readonly.yaml
+  - mcp-servers/kubernetes-mcp-rbac.yaml
+  - policies/tool-risk-policy.example.yaml

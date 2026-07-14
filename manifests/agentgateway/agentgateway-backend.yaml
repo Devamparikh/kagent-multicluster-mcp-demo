@@ -1,0 +1,26 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: application-clusters-k8s-readonly
+  namespace: platform-mcps
+  labels:
+    app.kubernetes.io/name: application-clusters-k8s-readonly
+    app.kubernetes.io/part-of: kagent-multicluster-mcp-demo
+spec:
+  type: MCP
+  mcp:
+    mode: Virtual
+    failureMode: FailOpen
+    targets:
+      - name: cluster-a
+        host: cluster-a-kubernetes-mcp.platform-tools.svc.cluster.local
+        port: 8080
+        path: /mcp
+        protocol: STREAMABLE_HTTP
+        toolPrefix: cluster-a
+      - name: cluster-b
+        host: cluster-b-kubernetes-mcp.platform-tools.svc.cluster.local
+        port: 8080
+        path: /mcp
+        protocol: STREAMABLE_HTTP
+        toolPrefix: cluster-b

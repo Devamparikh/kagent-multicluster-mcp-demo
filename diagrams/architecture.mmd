@@ -1,0 +1,25 @@
+flowchart LR
+  subgraph agent_cluster["Agent / management cluster"]
+    chat["Slack or Teams alert"]
+    kagent["Kagent agent"]
+    remote["RemoteMCPServer"]
+    gateway["Agentgateway Virtual MCP"]
+  end
+
+  subgraph cluster_a["Application cluster A"]
+    mcp_a["Kubernetes MCP server"]
+    api_a["Kubernetes API"]
+  end
+
+  subgraph cluster_b["Application cluster B"]
+    mcp_b["Kubernetes MCP server"]
+    api_b["Kubernetes API"]
+  end
+
+  chat --> kagent
+  kagent --> remote
+  remote --> gateway
+  gateway -->|"cluster-a_* tools"| mcp_a
+  gateway -->|"cluster-b_* tools"| mcp_b
+  mcp_a --> api_a
+  mcp_b --> api_b

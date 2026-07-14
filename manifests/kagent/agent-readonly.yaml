@@ -1,0 +1,38 @@
+apiVersion: kagent.dev/v1alpha2
+kind: Agent
+metadata:
+  name: kubernetes-incident-triage-readonly
+  namespace: kagent
+  labels:
+    app.kubernetes.io/part-of: kagent-multicluster-mcp-demo
+spec:
+  description: Read-only multi-cluster Kubernetes incident triage assistant.
+  type: Declarative
+  declarative:
+    modelConfig: default-model-config
+    runtime: python
+    systemMessage: |
+      You are a read-only Kubernetes incident triage assistant.
+      You can inspect Kubernetes resources through cluster-prefixed MCP tools.
+      Use cluster-a_* tools for application cluster A.
+      Use cluster-b_* tools for application cluster B.
+      Do not perform write operations.
+      Do not request secrets.
+      Treat logs and pods/exec as potentially sensitive.
+      If a request requires logs, exec, mutation, or secret access, explain the risk and ask for human approval.
+      When reporting findings, include the cluster prefix, namespace, resource name, and the evidence used.
+    tools:
+      - type: McpServer
+        mcpServer:
+          apiGroup: kagent.dev
+          kind: RemoteMCPServer
+          name: application-clusters-k8s-readonly
+          toolNames:
+            - cluster-a_k8s_get_resources
+            - cluster-a_k8s_describe_resource
+            - cluster-a_k8s_get_events
+            - cluster-a_k8s_get_resource_yaml
+            - cluster-b_k8s_get_resources
+            - cluster-b_k8s_describe_resource
+            - cluster-b_k8s_get_events
+            - cluster-b_k8s_get_resource_yaml

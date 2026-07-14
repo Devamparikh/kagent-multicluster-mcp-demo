@@ -1,0 +1,12 @@
+apiVersion: kagent.dev/v1alpha2
+kind: RemoteMCPServer
+metadata:
+  name: application-clusters-k8s-readonly
+  namespace: kagent
+  labels:
+    app.kubernetes.io/part-of: kagent-multicluster-mcp-demo
+spec:
+  description: Federated read-only Kubernetes MCP tools for application clusters.
+  protocol: STREAMABLE_HTTP
+  terminateOnClose: true
+  url: http://shared-mcps.platform-mcps.svc.cluster.local/mcps/application-clusters-k8s-readonly/mcp

@@ -1,0 +1,24 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: application-clusters-k8s-readonly
+  namespace: platform-mcps
+  labels:
+    app.kubernetes.io/part-of: kagent-multicluster-mcp-demo
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: shared-mcps
+      namespace: platform-mcps
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /mcps/application-clusters-k8s-readonly
+      backendRefs:
+        - group: agentgateway.dev
+          kind: AgentgatewayBackend
+          name: application-clusters-k8s-readonly
+          namespace: platform-mcps
+          weight: 1
